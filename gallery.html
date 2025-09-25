@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Galeria de Fotos - Momentos Especiais</title>
+    <meta name="description" content="Galeria de fotos profissional com momentos especiais capturados para sempre. Explore nossa coleção de fotografias únicas." />
+    <link rel="stylesheet" href="gallery.css">
+    <style>
+        /* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Variáveis CSS para cores (HSL) */
+:root {
+    --background: hsl(250, 100%, 98%);
+    --foreground: hsl(240, 10%, 15%);
+    --primary: hsl(280, 70%, 60%);
+    --primary-foreground: hsl(0, 0%, 100%);
+    --secondary: hsl(250, 30%, 95%);
+    --secondary-foreground: hsl(240, 10%, 25%);
+    --muted: hsl(250, 20%, 96%);
+    --muted-foreground: hsl(240, 5%, 50%);
+    --accent: hsl(285, 85%, 70%);
+    --border: hsl(250, 20%, 90%);
+    --gallery-primary: hsl(280, 70%, 60%);
+    --gallery-secondary: hsl(285, 85%, 70%);
+    --gallery-hover: hsl(280, 80%, 65%);
+    --shadow: hsl(280, 70%, 60%, 0.1);
+    --shadow-hover: hsl(280, 70%, 60%, 0.2);
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--background);
+    color: var(--foreground);
+    line-height: 1.6;
+}
+
+/* Navigation */
+.nav {
+    padding: 1.5rem 1rem;
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: none;
+    border: none;
+    color: var(--foreground);
+    cursor: pointer;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+}
+
+.nav-btn:hover {
+    color: var(--gallery-primary);
+    background-color: var(--secondary);
+}
+
+.nav-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.nav-brand svg {
+    color: var(--gallery-primary);
+}
+
+.nav-brand span {
+    color: var(--foreground);
+    font-weight: 500;
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+.hero-container {
+    max-width: 1024px;
+    margin: 0 auto;
+}
+
+.hero-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.hero-icon {
+    padding: 0.75rem;
+    background: linear-gradient(135deg, var(--gallery-primary), var(--gallery-secondary));
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.hero-icon svg {
+    color: white;
+}
+
+.hero-title h1 {
+    font-size: clamp(2.5rem, 5vw, 3rem);
+    font-weight: 700;
+    color: var(--foreground);
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--muted-foreground);
+    max-width: 512px;
+    margin: 0 auto;
+    line-height: 1.75;
+}
+
+/* Gallery */
+.gallery {
+    padding: 3rem 1rem;
+}
+
+.gallery-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .gallery-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.photo-card {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.photo-card:hover {
+    transform: scale(1.02);
+}
+
+.photo-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.photo-wrapper:hover {
+    box-shadow: 0 20px 40px -10px var(--shadow-hover);
+}
+
+.photo-img {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.photo-card:hover .photo-img {
+    transform: scale(1.1);
+}
+
+.photo-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent, transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.photo-card:hover .photo-overlay {
+    opacity: 1;
+}
+
+.photo-info {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.photo-card:hover .photo-info {
+    opacity: 1;
+}
+
+.photo-info h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    position: relative;
+    background-color: var(--background);
+    margin: 2% auto;
+    padding: 0;
+    width: 90%;
+    max-width: 1024px;
+    max-height: 90vh;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1001;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.close:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+#modal-img {
+    width: 100%;
+    height: auto;
+    max-height: 70vh;
+    object-fit: contain;
+}
+
+.modal-info {
+    padding: 1.5rem;
+    background-color: var(--background);
+}
+
+.modal-info h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--foreground);
+    margin-bottom: 0.5rem;
+}
+
+.modal-info p {
+    color: var(--muted-foreground);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .nav-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .nav-actions {
+        order: -1;
+    }
+    
+    .hero-title {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .hero-title h1 {
+        font-size: 2rem;
+    }
+    
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 5% auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-btn span {
+        display: none;
+    }
+    
+    .hero {
+        padding: 2rem 1rem;
+    }
+    
+    .gallery {
+        padding: 2rem 1rem;
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="index.html">
+                <button class="nav-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                        <polyline points="9,22 9,12 15,12 15,22"/>
+                    </svg>
+                    <span>Início</span>
+                </button>
+            </a>
+            
+            <div class="nav-center">
+                <div class="nav-brand">
+                    <a href="gallery.html">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+                            <circle cx="12" cy="13" r="3"/>
+                        </svg>
+                    </a>
+                    <span>Galeria</span>
+                </div>
+            </div>
+            
+            <div class="nav-actions">
+                <a href="msg.html">
+                    <button class="nav-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                        <span>Mensagens</span>
+                    </button>
+                </a>
+
+                <a href="about.html">
+                    <button class="nav-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                        <span>Sobre</span>
+                    </button>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-title">
+                <div class="hero-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+                        <circle cx="12" cy="13" r="3"/>
+                    </svg>
+                </div>
+                <h1>Galeria de Fotos</h1>
+            </div>
+            <p class="hero-subtitle">Momentos especiais capturados para sempre</p>
+        </div>
+    </section>
+
+    <!-- Photo Gallery -->
+    <section class="gallery">
+        <div class="gallery-container">
+            <div class="gallery-grid">
+                <div class="photo-card">
+                    <div class="photo-wrapper">
+                        <img src="fotocvpar.jpg" alt="eu te amo meu amor" class="photo-img">
+                        <div class="photo-overlay"></div>
+                        <div class="photo-info">
+                            <h3>Foto CVPAR</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <div class="photo-wrapper">
+                        <img src="nozesdeverde.jpg" alt="Nunca vou conseguir expressar 100% o quanto eu te amo" class="photo-img">
+                        <div class="photo-overlay"></div>
+                        <div class="photo-info">
+                            <h3>Aniversario da Laurinha</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <div class="photo-wrapper">
+                        <img src="profdeport.jpg" alt="Mais saiba que eu vou fazer de tudo para te fazer feliz e demontrar muito mais" class="photo-img">
+                        <div class="photo-overlay"></div>
+                        <div class="photo-info">
+                            <h3>"Estou igual as Prof de Portugues"</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <div class="photo-wrapper">
+                        <img src="sorrsin.jpg" alt="Eu so tenho a parabenizar voce, uma mulher forte e incrivel" class="photo-img">
+                        <div class="photo-overlay"></div>
+                        <div class="photo-info">
+                            <h3>Sorrisinho</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <div class="photo-wrapper">
+                        <img src="intocavel.jpg" alt="Saiba que eu tenho muito orgulho de voce meu amor,voce é meu mundo, eu sempre irei apoiar voce em tudo" class="photo-img">
+                        <div class="photo-overlay"></div>
+                        <div class="photo-info">
+                            <h3>"Eu toda Intocavel"</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <div class="photo-wrapper">
+                        <img src="icaraizinho.jpg" alt="Obrigado por ser essa pessoa maravilhosa que voce é, eu sempre estarei aqui, torcendo por voce S2" class="photo-img">
+                        <div class="photo-overlay"></div>
+                        <div class="photo-info">
+                            <h3>"Amontada"</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal for full-size images -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <img id="modal-img" src="" alt="">
+            <div class="modal-info">
+                <h3 id="modal-title"></h3>
+                <p id="modal-description"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple modal functionality
+        const modal = document.getElementById('modal');
+        const modalImg = document.getElementById('modal-img');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDescription = document.getElementById('modal-description');
+        const close = document.getElementsByClassName('close')[0];
+
+        document.querySelectorAll('.photo-card').forEach((card, index) => {
+            card.addEventListener('click', () => {
+                const img = card.querySelector('img');
+                const title = card.querySelector('h3').textContent;
+                const alt = img.alt;
+                
+                modal.style.display = 'block';
+                modalImg.src = img.src;
+                modalTitle.textContent = title;
+                modalDescription.textContent = alt;
+            });
+        });
+
+        close.onclick = function() {
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
